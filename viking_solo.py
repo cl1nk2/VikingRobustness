@@ -406,77 +406,21 @@ def route(equ_or_sol, crystal, days, h,
 
 
 #Do the calculations.
-simulation_count = 1000
+simulation_equinox = "sol"
+simulation_crystal = "cal"
+days = 13
+simulation_h = 3.0
+cloud_med = 0
+cloud_dev = 2
+night_navigation = False
 
-result_file = open("result.dat","w+")
+print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation))
 
-for k in range(2):
-    if(k == 0):
-        simulation_equinox = "sol"
-	days = 13
-    else:
-        simulation_equinox = "equ"
-	days = 16
+t_arr, elevation_arr, cloudiness_arr, n_error_arr, pos_arr, vel_arr, hit = route(simulation_equinox, simulation_crystal, days, simulation_h, cloud_med=cloud_med, cloud_dev=cloud_dev, night_navigation=night_navigation)
 
-    for l in range(3):
-        if(l == 0):
-            simulation_crystal = "cal"
-        if(l == 1):
-            simulation_crystal = "cord"
-        if(l == 2):
-            simulation_crystal = "tour"
-
-        for m in range(5):
-            if(m == 0):
-                simulation_h = 0.5
-            if(m == 1):
-                simulation_h = 1.0
-            if(m == 2):
-                simulation_h = 2.0
-            if(m == 3):
-                simulation_h = 3.0
-            if(m == 4):
-                simulation_h = 6.0
-
-	    for n in range(2):
-		if(n == 0):
-		    night_navigation = False
-		if(n == 1):
-		    night_navigation = True
-		
-		for o in range(3):
-		    if(o == 0):
-			cloud_dev = 1
-		    if(o == 1):
-			cloud_dev = 2
-		    if(o == 2):
-			cloud_dev = 4
-		    
-		    for p in range(3):
-			if(p == 0):
-			    cloud_med = -1
-			if(p == 1):
-			    cloud_med = 0
-			if(p == 2):
-			    cloud_med = 1
-
-		    hit_count = 0
-
-		    for i in range(simulation_count):
-		        t_arr, elevation_arr, cloudiness_arr, n_error_arr, pos_arr, vel_arr, hit = route(simulation_equinox, simulation_crystal, days, simulation_h, cloud_med=cloud_med, cloud_dev=cloud_dev, night_navigation=night_navigation)
-
-			filename = "simulations/" + simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation) + "-" + str(i).zfill(5) + ".dat"  
-		        print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation) + '\t' + str(i))
-		        f_out = open(filename,"w+")
-		        f_out.write('#' + str(hit) + '\n')
-		        for j in range(len(t_arr)):
-		            f_out.write(str(t_arr[j]) + '\t' + str(elevation_arr[j]) + '\t' + str(cloudiness_arr[j]) + '\t' + str(n_error_arr[j]) + '\t' + str(pos_arr[j]) + '\t' + str(vel_arr[j]) + '\n')
-		        f_out.close()
-
-		        if(hit):
-		            hit_count += 1
-
-		    hit_percent = float(hit_count) / float(simulation_count)
-		    result_file.write(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(night_navigation) + '\t' + str(cloud_dev) + '\t' + str(cloud_med) + '\t' + str(hit_percent) + '\n')
-
-result_file.close()
+filename = "simulations/solo/" + simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation) + ".dat"
+f_out = open(filename,"w+")
+f_out.write('#' + str(hit) + '\n')
+for j in range(len(t_arr)):
+	f_out.write(str(t_arr[j]) + '\t' + str(elevation_arr[j]) + '\t' + str(cloudiness_arr[j]) + '\t' + str(n_error_arr[j]) + '\t' + str(pos_arr[j]) + '\t' + str(vel_arr[j]) + '\n')
+f_out.close()		 
