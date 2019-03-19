@@ -51,9 +51,9 @@ col = "red"
 pos_array = []
 with open(filename) as f_in:
     if(f_in.readline()[1:-1] == "True"):
-	col = "green"
+        col = "green"
     for line in f_in:
-	pos_array.append((float(line.split()[4][1:-1]), float(line.split()[5][:-1])))
+        pos_array.append((float(line.split()[4][1:-1]), float(line.split()[5][:-1])))
 
 ax.plot([i[0] for i in pos_array], [i[1] for i in pos_array], color=col)
 

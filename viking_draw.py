@@ -32,10 +32,10 @@ simulation_end = 999
 for k in range(2):
     if(k == 0):
         simulation_equinox = "sol"
-	days = 10
+        days = 13
     else:
         simulation_equinox = "equ"
-	days = 16
+        days = 16
 
     for l in range(3):
         if(l == 0):
@@ -57,53 +57,53 @@ for k in range(2):
             if(m == 4):
                 simulation_h = 6.0
 
-	    for n in range(2):
-		if(n == 0):
-		    night_navigation = False
-		if(n == 1):
-		    night_navigation = True
-		
-		for o in range(3):
-		    if(o == 0):
-			cloud_dev = 1
-		    if(o == 1):
-			cloud_dev = 2
-		    if(o == 2):
-			cloud_dev = 4
-		    
-		    for p in range(3):
-			if(p == 0):
-			    cloud_med = -1
-			if(p == 1):
-			    cloud_med = 0
-			if(p == 2):
-			    cloud_med = 1
+            for n in range(2):
+                if(n == 0):
+                    night_navigation = False
+                if(n == 1):
+                    night_navigation = True
+            
+                for o in range(3):
+                    if(o == 0):
+                        cloud_dev = 1
+                    if(o == 1):
+                        cloud_dev = 2
+                    if(o == 2):
+                        cloud_dev = 4
+                    
+                    for p in range(1):
+                        if(p == 0):
+                            cloud_med = 1
+                        #if(p == 1):
+                        #    cloud_med = 0
+                        #if(p == 2):
+                        #    cloud_med = 1
 
-            	    filename_seed = simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation)
-            	    print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation))
+                        filename_seed = simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation)
+                        print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation))
 
-            	    fig, ax = plt.subplots()
-            	    ax.plot([i[0] for i in map_data], [i[1] for i in map_data], '.', markersize=1, color= 'black')
-            	    ax.plot([i[0] for i in success_map_data], [i[1] for i in success_map_data], color= 'blue')
-            	    ax.set(xlabel='x (km)', ylabel='y (km)', title='Map')
-            	    ax.grid()
-            	    ax.set_xlim(-2550, 750)
-            	    ax.set_ylim(1800, 3150)
+                        fig, ax = plt.subplots()
+                        ax.plot([i[0] for i in map_data], [i[1] for i in map_data], '.', markersize=1, color= 'black')
+                        ax.plot([i[0] for i in success_map_data], [i[1] for i in success_map_data], color= 'blue')
+                        ax.set(xlabel='x (km)', ylabel='y (km)', title='Map')
+                        ax.grid()
+                        ax.set_xlim(-2550, 750)
+                        ax.set_ylim(1800, 3150)
 
-            	    for i in range(simulation_start, simulation_end):
+                        for i in range(simulation_start, simulation_end):
 
-		        filename = "simulations/" + filename_seed + '-' + str(i).zfill(5) + ".dat"
-		        f_in = open(filename, "r")
-		        col = "red"
-		        pos_array = []
-		        with open(filename) as f_in:
-		            if(f_in.readline()[1:-1] == "True"):
-		                col = "green"
-		            for line in f_in:
-		                pos_array.append((float(line.split()[4][1:-1]), float(line.split()[5][:-1])))
+                            filename = "simulations/" + filename_seed + '-' + str(i).zfill(5) + ".dat"
+                            f_in = open(filename, "r")
+                            col = "red"
+                            pos_array = []
+                            with open(filename) as f_in:
+                                if(f_in.readline()[1:-1] == "True"):
+                                    col = "green"
+                                for line in f_in:
+                                    pos_array.append((float(line.split()[4][1:-1]), float(line.split()[5][:-1])))
 
-		        ax.plot([i[0] for i in pos_array], [i[1] for i in pos_array], color=col)
+                            ax.plot([i[0] for i in pos_array], [i[1] for i in pos_array], color=col)
 
-		    fig.savefig("pics/" + filename_seed + ".png", dpi=300)
-		    fig.clear()
-		    plt.close()
+                        fig.savefig("pics/" + filename_seed + ".png", dpi=300)
+                        fig.clear()
+                        plt.close()

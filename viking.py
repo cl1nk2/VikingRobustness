@@ -174,31 +174,31 @@ def calc_wake_up_time(equ):
         return rd.uniform(2.0, 3.0)
 
 def calc_elevation(equ, hour):
-	elevation = 0.0
-	hour = int(hour)
+    elevation = 0.0
+    hour = int(hour)
 
-	if(equ):
-		if(hour > 5 and hour < 18):
-			elevation = equ_elevation_table[hour]
-		else:
-			elevation = 0.0
+    if(equ):
+        if(hour > 5 and hour < 18):
+            elevation = equ_elevation_table[hour]
+        else:
+            elevation = 0.0
 
-	else:
-		if(hour > 2 and hour < 21):
-			elevation = sol_elevation_table[hour]
-		else:
-			elevation = 0.0
+    else:
+        if(hour > 2 and hour < 21):
+            elevation = sol_elevation_table[hour]
+        else:
+            elevation = 0.0
 
-	return elevation
+    return elevation
 
 def calc_cloudiness(cloudiness, cloud_med, cloud_dev):
-	delta = rd.gauss(cloud_med, cloud_dev)
-	cloudiness = int(round(cloudiness + delta))
-	if(cloudiness > 8):
-		cloudiness = 8
-	if(cloudiness < 0):
-		cloudiness = 0
-	return cloudiness
+    delta = rd.gauss(cloud_med, cloud_dev)
+    cloudiness = int(round(cloudiness + delta))
+    if(cloudiness > 8):
+        cloudiness = 8
+    if(cloudiness < 0):
+        cloudiness = 0
+    return cloudiness
 
 def calc_n_error(equ, cal, cord, tour, hour, elevation_double, cloudiness):
     elevation = int(np.ceil(elevation_double / 5.0) * 5.0)
@@ -316,7 +316,7 @@ def step(equ, cal, cord, tour, h, vel_avg, vel_std, vel_max, cloud_med, cloud_de
                 change_wake_up_time = True
 
             if(t > (138000 / vel_max)):
-		if(t % 60 == 0):
+        if(t % 60 == 0):
                     min_distance = calc_min_distance()
                 hit = is_it_a_hit(pos, min_distance)
 
@@ -386,13 +386,13 @@ def route(equ_or_sol, crystal, days, h,
     hit = False
 
     while (t < (24 * 60 * days)) and not(hit):
-    	t_arr.append(t)
-    	elevation_arr.append(elevation)
-    	cloudiness_arr.append(cloudiness)
-    	n_error_arr.append(n_error)
-    	pos_arr.append(pos)
-    	vel_arr.append(vel)
-    	t, meas_time, time_until_meas, wake_up_time, change_wake_up_time, elevation, cloudiness, n_error, pos, vel, hit, min_distance = step(equ, cal, cord, tour, h, vel_avg, vel_std, vel_max, cloud_med, cloud_dev, night_navigation, t, meas_time, time_until_meas, wake_up_time, change_wake_up_time, elevation, cloudiness, n_error, pos, vel, hit, min_distance)
+        t_arr.append(t)
+        elevation_arr.append(elevation)
+        cloudiness_arr.append(cloudiness)
+        n_error_arr.append(n_error)
+        pos_arr.append(pos)
+        vel_arr.append(vel)
+        t, meas_time, time_until_meas, wake_up_time, change_wake_up_time, elevation, cloudiness, n_error, pos, vel, hit, min_distance = step(equ, cal, cord, tour, h, vel_avg, vel_std, vel_max, cloud_med, cloud_dev, night_navigation, t, meas_time, time_until_meas, wake_up_time, change_wake_up_time, elevation, cloudiness, n_error, pos, vel, hit, min_distance)
 
     t_arr.append(t)
     elevation_arr.append(elevation)
@@ -413,10 +413,10 @@ result_file = open("result.dat","w+")
 for k in range(2):
     if(k == 0):
         simulation_equinox = "sol"
-	days = 13
+        days = 13
     else:
         simulation_equinox = "equ"
-	days = 16
+        days = 16
 
     for l in range(3):
         if(l == 0):
@@ -438,45 +438,45 @@ for k in range(2):
             if(m == 4):
                 simulation_h = 6.0
 
-	    for n in range(2):
-		if(n == 0):
-		    night_navigation = False
-		if(n == 1):
-		    night_navigation = True
-		
-		for o in range(3):
-		    if(o == 0):
-			cloud_dev = 1
-		    if(o == 1):
-			cloud_dev = 2
-		    if(o == 2):
-			cloud_dev = 4
-		    
-		    for p in range(3):
-			if(p == 0):
-			    cloud_med = -1
-			if(p == 1):
-			    cloud_med = 0
-			if(p == 2):
-			    cloud_med = 1
+            for n in range(2):
+                if(n == 0):
+                    night_navigation = False
+                if(n == 1):
+                    night_navigation = True
+            
+                for o in range(3):
+                    if(o == 0):
+                        cloud_dev = 1
+                    if(o == 1):
+                        cloud_dev = 2
+                    if(o == 2):
+                        cloud_dev = 4
+                    
+                    for p in range(3):
+                        if(p == 0):
+                            cloud_med = -1
+                        if(p == 1):
+                            cloud_med = 0
+                        if(p == 2):
+                            cloud_med = 1
 
-		    hit_count = 0
+                        hit_count = 0
 
-		    for i in range(simulation_count):
-		        t_arr, elevation_arr, cloudiness_arr, n_error_arr, pos_arr, vel_arr, hit = route(simulation_equinox, simulation_crystal, days, simulation_h, cloud_med=cloud_med, cloud_dev=cloud_dev, night_navigation=night_navigation)
+                        for i in range(simulation_count):
+                            t_arr, elevation_arr, cloudiness_arr, n_error_arr, pos_arr, vel_arr, hit = route(simulation_equinox, simulation_crystal, days, simulation_h, cloud_med=cloud_med, cloud_dev=cloud_dev, night_navigation=night_navigation)
 
-			filename = "simulations/" + simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation) + "-" + str(i).zfill(5) + ".dat"  
-		        print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation) + '\t' + str(i))
-		        f_out = open(filename,"w+")
-		        f_out.write('#' + str(hit) + '\n')
-		        for j in range(len(t_arr)):
-		            f_out.write(str(t_arr[j]) + '\t' + str(elevation_arr[j]) + '\t' + str(cloudiness_arr[j]) + '\t' + str(n_error_arr[j]) + '\t' + str(pos_arr[j]) + '\t' + str(vel_arr[j]) + '\n')
-		        f_out.close()
+                            filename = "simulations/" + simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation) + "-" + str(i).zfill(5) + ".dat"  
+                            print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation) + '\t' + str(i))
+                            f_out = open(filename,"w+")
+                            f_out.write('#' + str(hit) + '\n')
+                            for j in range(len(t_arr)):
+                                f_out.write(str(t_arr[j]) + '\t' + str(elevation_arr[j]) + '\t' + str(cloudiness_arr[j]) + '\t' + str(n_error_arr[j]) + '\t' + str(pos_arr[j]) + '\t' + str(vel_arr[j]) + '\n')
+                            f_out.close()
 
-		        if(hit):
-		            hit_count += 1
+                        if(hit):
+                            hit_count += 1
 
-		    hit_percent = float(hit_count) / float(simulation_count)
-		    result_file.write(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(night_navigation) + '\t' + str(cloud_dev) + '\t' + str(cloud_med) + '\t' + str(hit_percent) + '\n')
+                        hit_percent = float(hit_count) / float(simulation_count)
+                        result_file.write(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(night_navigation) + '\t' + str(cloud_dev) + '\t' + str(cloud_med) + '\t' + str(hit_percent) + '\n')
 
 result_file.close()
