@@ -316,7 +316,7 @@ def step(equ, cal, cord, tour, h, vel_avg, vel_std, vel_max, cloud_med, cloud_de
                 change_wake_up_time = True
 
             if(t > (138000 / vel_max)):
-        if(t % 60 == 0):
+                if(t % 60 == 0):
                     min_distance = calc_min_distance()
                 hit = is_it_a_hit(pos, min_distance)
 
@@ -441,7 +441,7 @@ for k in range(2):
             for n in range(2):
                 if(n == 0):
                     night_navigation = False
-                if(n == 1):
+                else:
                     night_navigation = True
             
                 for o in range(3):
@@ -473,8 +473,8 @@ for k in range(2):
                                 f_out.write(str(t_arr[j]) + '\t' + str(elevation_arr[j]) + '\t' + str(cloudiness_arr[j]) + '\t' + str(n_error_arr[j]) + '\t' + str(pos_arr[j]) + '\t' + str(vel_arr[j]) + '\n')
                             f_out.close()
 
-                        if(hit):
-                            hit_count += 1
+                            if(hit):
+                                hit_count += 1
 
                         hit_percent = float(hit_count) / float(simulation_count)
                         result_file.write(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(night_navigation) + '\t' + str(cloud_dev) + '\t' + str(cloud_med) + '\t' + str(hit_percent) + '\n')

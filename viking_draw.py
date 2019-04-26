@@ -74,10 +74,10 @@ for k in range(2):
                     for p in range(1):
                         if(p == 0):
                             cloud_med = 1
-                        #if(p == 1):
-                        #    cloud_med = 0
-                        #if(p == 2):
-                        #    cloud_med = 1
+                        if(p == 1):
+                            cloud_med = 0
+                        if(p == 2):
+                            cloud_med = 1
 
                         filename_seed = simulation_equinox + "_" + simulation_crystal + "_" + str(simulation_h) + "_" + str(cloud_med) + "_" + str(cloud_dev) + "_" + str(night_navigation)
                         print(simulation_equinox + '\t' + simulation_crystal + '\t' + str(simulation_h) + '\t' + str(cloud_med) + '\t' + str(cloud_dev) + '\t' + str(night_navigation))
